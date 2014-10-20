@@ -1,0 +1,26 @@
+import usb.core
+import usb.util
+import sys
+ 
+# Find Device
+def detach_kernel_driver(self, dev_handle, intf):
+        _check(_lib.usb_detach_kernel_driver_np(dev_handle, intf))
+        
+device = usb.core.find(idVendor= 0x0021, idProduct=0x0021)
+
+#replace 0x80ee and 0x0021 with what lsusb -v returned
+
+if device is None:
+    raise ValueError('Device not found')
+for self in range(10):
+    try:
+        device.set_configuration(self)
+    except:
+        pass
+
+for bmRequest in range(200):
+      try:
+        #ctrl_transfer( bmRequestType, bmRequest, wValue, wIndex, nBytes)
+        usbCom = device.ctrl_transfer(0xc0, bmRequest, 0, 0, 1)
+      except:
+       pass
